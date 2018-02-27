@@ -1,7 +1,7 @@
 import numpy as np
 from collections import Counter
 
-def make_vocab(train, valid, test):
+def make_vocab(train, valid, test, chars=False):
     """
     Makes the word -> index and index -> word mappings
     """
@@ -14,10 +14,17 @@ def make_vocab(train, valid, test):
     #before tokens are converted to <UNK> so this is used more as a convenience i'm used to
     token_counter = Counter()
 
-    #split the strings into a list of words and update the counter
-    token_counter.update(train.split())
-    token_counter.update(valid.split())
-    token_counter.update(test.split())
+    #split the strings into a list of words (or list of chars) and update the counter
+    if chars:
+        #split into chars
+        token_counter.update(list(train))
+        token_counter.update(list(valid))
+        token_counter.update(list(test))
+    else:
+        #split into words
+        token_counter.update(train.split())
+        token_counter.update(valid.split())
+        token_counter.update(test.split())
     
     i = 0
 
@@ -30,7 +37,7 @@ def make_vocab(train, valid, test):
 
     return word2idx, idx2word
 
-def get_wikitext_words():
+def get_wikitext_data(chars=False):
 
     #read in the data
     #this is one long giant string
@@ -44,12 +51,19 @@ def get_wikitext_words():
         test = r.read()
 
     #creates the word->idx and idx->word mappings
-    word2idx, idx2word = make_vocab(train, valid, test)
+    word2idx, idx2word = make_vocab(train, valid, test, chars)
+
+    print(word2idx)
 
     #convert from a string to an array of integers using the mapping
-    train_idx = [word2idx[t] for t in train.split()]
-    valid_idx = [word2idx[t] for t in valid.split()]
-    test_idx = [word2idx[t] for t in test.split()]
+    if chars:
+        train_idx = [word2idx[t] for t in list(train)]
+        valid_idx = [word2idx[t] for t in list(valid)]
+        test_idx = [word2idx[t] for t in list(test)]
+    else:
+        train_idx = [word2idx[t] for t in train.split()]
+        valid_idx = [word2idx[t] for t in valid.split()]
+        test_idx = [word2idx[t] for t in test.split()]
 
     #chainer expects numpy arrays (at least the example does) so let's convert
     train_idx = np.array(train_idx)

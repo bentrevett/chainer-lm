@@ -13,6 +13,7 @@ import chainer.functions as F
 import chainer.links as L
 from chainer import training
 from chainer.training import extensions
+import chainer.cuda as cuda
 import wikitextpreprocess
 
 # Definition of a recurrent net for language modeling
@@ -191,12 +192,14 @@ def main():
                         help='Number of LSTM units in each layer')
     parser.add_argument('--model', '-m', default='model.npz',
                         help='Model file name to serialize')
+    parser.add_argument('--chars', action='store_true',
+                        help='Used if you want to do a character based language model instead of a word based')
     args = parser.parse_args()
 
     # Load the Penn Tree Bank long word sequence dataset
     #train, val, test = chainer.datasets.get_ptb_words()
     #THIS IS THE ONLY LINE THAT HAS CHANGED!
-    train, val, test = wikitextpreprocess.get_wikitext_words()
+    train, val, test = wikitextpreprocess.get_wikitext_data(args.chars)
     n_vocab = max(train) + 1  # train is just an array of integers
     print('#vocab =', n_vocab)
 
@@ -262,4 +265,5 @@ def main():
 
 
 if __name__ == '__main__':
+    print(cuda.cudnn_enabled)
     main()

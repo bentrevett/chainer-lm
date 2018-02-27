@@ -53,8 +53,6 @@ def get_wikitext_data(chars=False):
     #creates the word->idx and idx->word mappings
     word2idx, idx2word = make_vocab(train, valid, test, chars)
 
-    print(word2idx)
-
     #convert from a string to an array of integers using the mapping
     if chars:
         train_idx = [word2idx[t] for t in list(train)]

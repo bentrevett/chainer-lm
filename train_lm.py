@@ -13,7 +13,6 @@ import chainer.functions as F
 import chainer.links as L
 from chainer import training
 from chainer.training import extensions
-import chainer.cuda as cuda
 import wikitextpreprocess
 
 # Definition of a recurrent net for language modeling
@@ -263,5 +262,4 @@ def main():
 
 
 if __name__ == '__main__':
-    print(cuda.cudnn_enabled)
     main()

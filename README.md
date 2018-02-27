@@ -11,3 +11,7 @@ Usage:
 `python train_lm.py --gpu=0` for GPU
 
 `python train_lm.py` for CPU 
+
+By default it works on a word-based model, to work on characters, pass the `--chars` flag, i.e.:
+
+`python train_lm.py --chars` for character level on CPU

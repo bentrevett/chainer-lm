@@ -265,5 +265,4 @@ def main():
 
 
 if __name__ == '__main__':
-    print(cuda.cudnn_enabled)
     main()
